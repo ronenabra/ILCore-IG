@@ -194,3 +194,35 @@ Expression: "extension.where(url = 'http://fhir.health.gov.il/StructureDefinitio
     implies
   asNeeded.empty()"
 
+Invariant: il-allergy-category
+Description: "Category SHALL be present unless code includes no known allergies, or code has text and all codings are represented using data-absent-reason."
+Severity: #error
+Expression: "
+category.exists() or
+code.coding.where(
+  system = 'http://snomed.info/sct' and
+  code = '716186003'
+).exists() or
+(
+  code.text.hasValue() and
+  code.coding.all(
+    extension('http://hl7.org/fhir/StructureDefinition/data-absent-reason').exists()
+  )
+)
+"
+
+Invariant: il-allergy-coding
+Description: "Each coding SHALL contain system and code values without data-absent-reason, or a data-absent-reason extension with neither value populated."
+Severity: #error
+Expression: "
+(
+  system.hasValue() and
+  code.hasValue() and
+  extension('http://hl7.org/fhir/StructureDefinition/data-absent-reason').empty()
+) or
+(
+  system.getValue().empty() and
+  code.getValue().empty() and
+  extension('http://hl7.org/fhir/StructureDefinition/data-absent-reason').exists()
+)
+"

@@ -24,8 +24,8 @@ Description: "Israel Core proposed constraints and extensions on the AllergyInto
 * clinicalStatus and verificationStatus and code MS
 * code 1..1
 * code.coding 1..*
-* code.coding.system 1..1
-* code.coding.code 1..1
+* code.coding obeys il-allergy-coding
+* obeys il-allergy-category
 * code from $vs-il-core-allergy-intolerance-code (extensible)
 * code ^example.valueCodeableConcept = $sct#1003755004 "Allergy to Hevea brasiliensis latex protein (finding)"
 * code ^example.label = "Valid Example"
